@@ -1,0 +1,6 @@
+.taskbar {
+  max-height: 40px;
+  background-color: rgba(0, 0, 0, 0.8);
+  width: 100vw;
+  height: 40px;
+}
