@@ -1,9 +1,10 @@
 
-import { useEffect, useState, type ReactNode } from "react";
+import { useContext, useEffect, useState, type ReactNode } from "react";
 import "./window.css"
 import type { WindowInfo } from "$/types/WindowInfo";
 import type { Point } from "$/types/Point";
 import type { CSSPoint } from "$/types/CSSPoint";
+import { WindowContext } from "$/context/window/WindowContext";
 
 function Window({
     id = 0,
@@ -13,7 +14,13 @@ function Window({
     onClose = () => {},
     defaultCoords = {x: "50%", y: "50%"},
     children
-}: WindowInfo & {defaultCoords: CSSPoint, onOpen?: (window: WindowInfo) => void, onClose?: <T>(...params: T[]) => void, children?: ReactNode}) {
+}: WindowInfo & {defaultCoords?: CSSPoint, onOpen?: (window: WindowInfo) => void, onClose?: (window: WindowInfo) => void, children?: ReactNode}) {
+
+    const windowContext = useContext(WindowContext);
+
+    if (!windowContext) throw new Error("No window context!");
+
+    const { closeWindow } = windowContext;
 
     const [opened, setOpened] = useState<boolean>(false);
 
@@ -67,7 +74,12 @@ function Window({
             <div className="buttons">
                 <button>-</button>
                 <button>o</button>
-                <button onClick={() => onClose()}>X</button>
+                <button onClick={() => {
+
+                    const windowInfo: WindowInfo = {id: id, title: title, icon: icon}
+                    closeWindow(windowInfo)
+                    onClose(windowInfo)
+                }}>X</button>
             </div>
         </div>
 

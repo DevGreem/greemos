@@ -4,7 +4,7 @@ import "./desktop.css"
 import { DesktopIcon } from "../icons/DesktopIcon"
 import type { WindowInfo } from "$/types/WindowInfo"
 
-function Desktop({ onOpenWindow, onCloseWindow }: { onOpenWindow?: (window: WindowInfo) => void, onCloseWindow?: (windowId: number) => void }) {
+function Desktop({ onOpenWindow, onCloseWindow }: { onOpenWindow?: (window: WindowInfo) => void, onCloseWindow?: (window: WindowInfo) => void }) {
 
     let [wallpaper, setWallpaper] = useState<string>(MemoryManager.get("wallpaper"))
     console.log("Loaded wallpaper: ", wallpaper)

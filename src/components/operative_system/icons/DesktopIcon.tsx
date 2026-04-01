@@ -1,8 +1,9 @@
 import type { AppInfo } from "$/types/AppInfo"
-import { useState, type MouseEventHandler } from "react"
+import { useContext, type MouseEventHandler } from "react"
 import "./desktopicon.css"
 import type { WindowInfo } from "$/types/WindowInfo";
 import Window from "../windows/Window";
+import { WindowContext } from "$/context/window/WindowContext";
 
 
 export function DesktopIcon({
@@ -11,26 +12,21 @@ export function DesktopIcon({
     onClick = undefined,
     onOpenWindow = undefined,
     onCloseWindow = undefined
-}: AppInfo & {onClick?: MouseEventHandler<HTMLDivElement>, onOpenWindow?: (window: WindowInfo) => void, onCloseWindow?: (windowId: number) => void}) {
+}: AppInfo & {onClick?: MouseEventHandler<HTMLDivElement>, onOpenWindow?: (window: WindowInfo) => void, onCloseWindow?: (window: WindowInfo) => void}) {
 
-    const [windows, setWindows] = useState<WindowInfo[]>([]);
+    //const [windows, setWindows] = useState<WindowInfo[]>([]);
+    const windowsContext = useContext(WindowContext);
 
-    function openDefaultWindow(): WindowInfo {
+    if (!windowsContext) throw new Error("Windows context not found")
 
-        const newWindow: WindowInfo = { id: Date.now(), title: title, icon: icon}
-        setWindows(value => [...value, newWindow])
-
-        return newWindow
-    }
-
-    function closeWindow(id: number) {
-        setWindows(value => value.filter(window => window.id !== id))
-
-        if (onCloseWindow) onCloseWindow(id);
-    }
+    const { windows, openWindow } = windowsContext;
 
     if (!onClick) {
-        onClick = () => openDefaultWindow()
+        onClick = () => openWindow({
+            id: Date.now(),
+            title: title,
+            icon: icon
+        })
     }
 
     return <>
@@ -46,7 +42,7 @@ export function DesktopIcon({
                 title={value.title}
                 icon={value.icon}
                 onOpen={onOpenWindow}
-                onClose={() => closeWindow(value.id)}/>
+                onClose={onCloseWindow}/>
         })}
     </>
 }
