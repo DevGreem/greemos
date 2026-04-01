@@ -1,9 +1,9 @@
-import { useContext, type ReactNode } from "react"
+import { useContext } from "react"
 import "./taskbar.css"
 import { WindowContext } from "$/context/window/WindowContext"
 import { TaskBarIcon } from "../icons/TaskBarIcon";
 
-export function TaskBar({ children }: { children?: ReactNode}) {
+export function TaskBar() {
 
     const windowsContext = useContext(WindowContext);
 
@@ -14,9 +14,8 @@ export function TaskBar({ children }: { children?: ReactNode}) {
 
     return <div className="taskbar">
         <div className="taskbar-apps">
-            {children}
             {windowsContext.windows.map(window => {
-                return <TaskBarIcon icon={window.icon}/>
+                return <TaskBarIcon key={window.id} icon={window.icon}/>
             })}
         </div>
         <div className="os-info">

@@ -1,11 +1,11 @@
-import type { WindowInfo } from "$/types/WindowInfo"
+import type { UniqueWindowInfo, WindowInfo} from "$/types/WindowInfo"
 import { createContext } from "react";
 
 
 type WindowContextType = {
-    windows: WindowInfo[];
+    windows: UniqueWindowInfo[];
     openWindow: (params: WindowInfo) => void;
-    closeWindow: (id: WindowInfo) => void;
+    closeWindow: (id: UniqueWindowInfo) => void;
 }
 
 export const WindowContext = createContext<WindowContextType|undefined>(undefined);

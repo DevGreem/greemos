@@ -4,6 +4,7 @@ import "./desktop.css"
 import { DesktopIcon } from "../icons/DesktopIcon"
 import { WallpaperContext } from "$/context/wallpaper/WallpaperContext"
 import { WindowContainer } from "../windows/WindowContainer"
+import { ExplorerIcon } from "../icons/customIcons/ExplorerIcon"
 
 function Desktop() {
 
@@ -21,6 +22,7 @@ function Desktop() {
         
         <div className="app-grid">
             <DesktopIcon title="Wallpapers"/>
+            <ExplorerIcon/>
         </div>
 
         <WindowContainer/>

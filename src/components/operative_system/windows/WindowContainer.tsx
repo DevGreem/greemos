@@ -19,7 +19,10 @@ export function WindowContainer() {
                 title={value.title}
                 icon={value.icon}
                 onOpen={value.onOpen}
-                onClose={value.onClose}/>
+                onClose={value.onClose}
+            >
+                {value.content}
+            </Window>
         })}
     </div>
 }

@@ -1,20 +1,20 @@
 
 import { useContext, useEffect, useState, type ReactNode } from "react";
 import "./window.css"
-import type { WindowInfo } from "$/types/WindowInfo";
+import type { UniqueWindowInfo } from "$/types/WindowInfo";
 import type { Point } from "$/types/Point";
 import type { CSSPoint } from "$/types/CSSPoint";
 import { WindowContext } from "$/context/window/WindowContext";
 
 function Window({
-    id = 0,
+    id,
     title,
     icon = "react.svg",
     onOpen = () => {},
     onClose = () => {},
     defaultCoords = {x: "50%", y: "50%"},
     children
-}: WindowInfo & {defaultCoords?: CSSPoint, onOpen?: (window: WindowInfo) => void, onClose?: (window: WindowInfo) => void, children?: ReactNode}) {
+}: UniqueWindowInfo & {defaultCoords?: CSSPoint, onOpen?: (window: UniqueWindowInfo) => void, onClose?: (window: UniqueWindowInfo) => void, children?: ReactNode}) {
 
     const windowContext = useContext(WindowContext);
 
@@ -76,7 +76,7 @@ function Window({
                 <button>o</button>
                 <button onClick={() => {
 
-                    const windowInfo: WindowInfo = {id: id, title: title, icon: icon}
+                    const windowInfo: UniqueWindowInfo = {id: id, title: title, icon: icon}
                     closeWindow(windowInfo)
                     onClose(windowInfo)
                 }}>X</button>

@@ -12,7 +12,6 @@ export function WallpaperProvider({ children }: { children: ReactNode }) {
         setWallpaper(newWallpaper);
         MemoryManager.setDict("wallpaper", newWallpaper);
     }
-    console.log(wallpaper);
     
     return <WallpaperContext.Provider value={{ wallpaper, changeWallpaper }}>
         {children}
