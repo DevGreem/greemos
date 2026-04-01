@@ -48,7 +48,7 @@ function Window({
     }, [hover, offset])
 
     if (!opened) {
-        onOpen({id, title, icon});
+        onOpen({id, title, icon, onOpen, onClose});
         setOpened(true);
     }
 

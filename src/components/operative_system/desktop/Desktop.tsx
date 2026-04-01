@@ -1,22 +1,29 @@
-import { MemoryManager } from "$/core/MemoryManager"
-import { useState } from "react"
+
+import { useContext } from "react"
 import "./desktop.css"
 import { DesktopIcon } from "../icons/DesktopIcon"
-import type { WindowInfo } from "$/types/WindowInfo"
+import { WallpaperContext } from "$/context/wallpaper/WallpaperContext"
+import { WindowContainer } from "../windows/WindowContainer"
 
-function Desktop({ onOpenWindow, onCloseWindow }: { onOpenWindow?: (window: WindowInfo) => void, onCloseWindow?: (window: WindowInfo) => void }) {
+function Desktop() {
 
-    let [wallpaper, setWallpaper] = useState<string>(MemoryManager.get("wallpaper"))
-    console.log("Loaded wallpaper: ", wallpaper)
-    setWallpaper
+    const wallpaperContext = useContext(WallpaperContext)
 
-    return <div className="desktop" style={{
-        backgroundImage: "url(" + wallpaper + ")",
-    }}>
+    if (!wallpaperContext) throw new Error("No wallpaper context setted");
+
+    const { wallpaper } = wallpaperContext;
+
+    
+
+    return <div className="desktop" style={wallpaper.type ? {
+        backgroundImage: "url(" + wallpaper.path + ")",
+    } : {backgroundColor: wallpaper.path}}>
         
         <div className="app-grid">
-            <DesktopIcon title="Wallpapers" onOpenWindow={onOpenWindow} onCloseWindow={onCloseWindow}/>
+            <DesktopIcon title="Wallpapers"/>
         </div>
+
+        <WindowContainer/>
     </div>
 }
 
