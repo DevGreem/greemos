@@ -8,6 +8,8 @@
 
 .app-grid {
     display: grid;
-    grid-auto-columns: auto;
-    grid-auto-rows: auto;
+    padding: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(40px, 40px));
+    grid-auto-rows: minmax(80px, 120px);
+    gap: 20px;
 }
