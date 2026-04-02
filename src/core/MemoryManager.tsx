@@ -17,20 +17,26 @@ export class MemoryManager {
 
     private static loadDefaultData() {
 
-        const wallpaper = this.get<WallpaperInfo>("wallpaper");
+        const welcome = this.get("welcome-screen");
+
+        if (!welcome) {
+            this.set<boolean>("welcome-screen", true);
+        }
+
+        const wallpaper = this.get("wallpaper");
 
         if (!wallpaper) {
             const defaultWallpaperPath: WallpaperInfo = { type: "image", path: "./wallpapers/galactic.jpg"}
-            this.set("wallpaper", defaultWallpaperPath)
+            this.setDict("wallpaper", defaultWallpaperPath)
         }
     }
 
-    static get<T extends Object>(key: string): T {
-        return localStorage.getItem(key) as T;
+    static get(key: string): string {
+        return localStorage.getItem(key) as string;
     }
 
     static getDict<T extends Record<any, any>>(key: string): T {
-        let item = localStorage.getItem(key) as string;
+        let item = localStorage.getItem(key) ?? "{}" as string;
 
         return JSON.parse(item);
     }

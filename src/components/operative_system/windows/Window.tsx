@@ -1,20 +1,29 @@
 
-import { useContext, useEffect, useState, type ReactNode } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./window.css"
-import type { UniqueWindowInfo } from "$/types/WindowInfo";
+import type { UniqueWindowInfo } from "$/types/window/WindowInfo";
 import type { Point } from "$/types/Point";
 import type { CSSPoint } from "$/types/CSSPoint";
 import { WindowContext } from "$/context/window/WindowContext";
+import type { UniqueWindowInstance } from "$/types/window/WindowInstance";
 
 function Window({
     id,
     title,
-    icon = "react.svg",
+    icon,
+    onMinimize = () => {},
+    onMaximize = () => {},
     onOpen = () => {},
     onClose = () => {},
     defaultCoords = {x: "50%", y: "50%"},
-    children
-}: UniqueWindowInfo & {defaultCoords?: CSSPoint, defaultSize?: CSSPoint, onOpen?: (window: UniqueWindowInfo) => void, onClose?: (window: UniqueWindowInfo) => void, children?: ReactNode}) {
+    defaultSize = {x: 0, y: 0},
+    children,
+    className = "",
+    cantMinimize,
+    cantMaximize,
+    cantClose,
+    canResize
+}: UniqueWindowInstance & {className?: string}) {
 
     const windowContext = useContext(WindowContext);
 
@@ -28,6 +37,8 @@ function Window({
     const [offset, setOffset] = useState<Point>({x:0, y:0})
 
     const [hover, setHover] = useState<boolean>(false);
+
+    const windowInfo: UniqueWindowInfo = {id, title, icon, defaultCoords, defaultSize, cantClose, cantMaximize, cantMinimize, canResize, children}
 
     useEffect(() => {
         const handleMove = (e: MouseEvent) => {
@@ -50,26 +61,20 @@ function Window({
 
     useEffect(() => {
         if (!opened) {
-            onOpen({id, title, icon, onOpen, onClose});
+            onOpen(windowInfo);
             setOpened(true);
         }
 
         return
     }, [])
 
-    return <div className="window" style={{
+    return <div className={`window ${className}`} style={{
         left: coords.x,
-        top: coords.y
-    }}
-        onMouseDown={(e) => {
-            const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-            const over = 2;
-
-            if (e.clientX >= rect.x-over || e.clientX <= rect.x+over) {
-                
-            }
-        }}
-    >
+        top: coords.y,
+        width: defaultSize.x,
+        height: defaultSize.y,
+        resize: canResize ? "both" : "none"
+    }}>
 
         <div className="window-bar" onMouseDown={(e) => {
             const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
@@ -82,18 +87,25 @@ function Window({
             setHover(true);
         }}>
 
-            <img src={icon} height={24} width={24}/>
+            {icon && <img src={icon} height={24} width={24}/>}
             <p>{title}</p>
 
-            <div className="buttons">
-                <button>-</button>
-                <button>o</button>
-                <button onClick={() => {
+            <div className="window-buttons">
+                
+                {!cantMinimize && <button onClick={() => onMinimize(windowInfo)}>
+                    -
+                </button>}
 
-                    const windowInfo: UniqueWindowInfo = {id: id, title: title, icon: icon}
+                {!cantMaximize && <button onClick={() => onMaximize(windowInfo)}>
+                    o
+                </button>}
+                
+                {!cantClose && <button onClick={() => {
                     closeWindow(windowInfo)
                     onClose(windowInfo)
-                }}>X</button>
+                }}>
+                    X
+                </button>}
             </div>
         </div>
 

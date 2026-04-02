@@ -1,15 +1,21 @@
-import type { AppInfo } from "$/types/AppInfo"
-import { useContext, type MouseEventHandler, type ReactNode } from "react"
+import { useContext, type MouseEventHandler } from "react"
 import "./desktopicon.css"
 import { WindowContext } from "$/context/window/WindowContext";
+import type { WindowInfo } from "$/types/window/WindowInfo";
 
 
 export function DesktopIcon({
     title,
     icon = "react.svg",
-    onClick = undefined,
-    children
-}: AppInfo & {children?: ReactNode, onClick?: MouseEventHandler<HTMLDivElement>}) {
+    onClick,
+    children,
+    canResize,
+    cantMinimize,
+    cantClose,
+    cantMaximize,
+    defaultCoords,
+    defaultSize
+}: WindowInfo & {onClick?: MouseEventHandler<HTMLDivElement>}) {
 
     const windowsContext = useContext(WindowContext);
 
@@ -19,9 +25,15 @@ export function DesktopIcon({
 
     if (!onClick) {
         onClick = () => openWindow({
-            title: title,
-            icon: icon,
-            content: children,
+            title,
+            icon,
+            children,
+            canResize,
+            cantClose,
+            cantMaximize,
+            cantMinimize,
+            defaultCoords,
+            defaultSize
         })
     }
 

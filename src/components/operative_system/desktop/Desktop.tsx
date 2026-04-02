@@ -15,7 +15,7 @@ function Desktop() {
 
     
 
-    return <div className="desktop" style={wallpaper.type ? {
+    return <div className="desktop" style={wallpaper.type == "image" ? {
         backgroundImage: "url(" + wallpaper.path + ")",
     } : {backgroundColor: wallpaper.path}}>
         

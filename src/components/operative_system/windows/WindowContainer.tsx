@@ -1,6 +1,7 @@
 import { WindowContext } from "$/context/window/WindowContext";
 import { useContext } from "react";
 import Window from "./Window";
+import { WelcomeScreen } from "./welcomeScreen/WelcomeScreen";
 
 
 export function WindowContainer() {
@@ -9,19 +10,17 @@ export function WindowContainer() {
     
     if (!windowsContext) throw new Error("Windows context not found")
     
-    const { windows } = windowsContext;
+    const { showWelcomeScreen, windows } = windowsContext;
     
     return <div className="windows-container">
+
+        {showWelcomeScreen && <WelcomeScreen/>}
+
         {windows.map((value) => {
             return <Window
                 key={value.id}
-                id={value.id}
-                title={value.title}
-                icon={value.icon}
-                onOpen={value.onOpen}
-                onClose={value.onClose}
+                {...value}
             >
-                {value.content}
             </Window>
         })}
     </div>
