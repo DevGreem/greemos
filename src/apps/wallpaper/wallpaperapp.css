@@ -1,0 +1,32 @@
+
+.wallpapers-app {
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    padding: 2px;
+}
+
+.wallpaper-type {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+}
+
+.wallpapers-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(256px, 256px));
+    gap: 10px;
+}
+
+.wallpapers-container-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.default-wallpaper {
+    max-width: 256px;
+    max-height: 256px;
+}

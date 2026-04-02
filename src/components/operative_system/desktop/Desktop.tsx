@@ -1,10 +1,9 @@
 
 import { useContext } from "react"
 import "./desktop.css"
-import { DesktopIcon } from "../icons/DesktopIcon"
 import { WallpaperContext } from "$/context/wallpaper/WallpaperContext"
 import { WindowContainer } from "../windows/WindowContainer"
-import { ExplorerIcon } from "../icons/customIcons/ExplorerIcon"
+import { WallpaperIcon } from "../icons/customIcons/WallpaperIcon"
 
 function Desktop() {
 
@@ -21,8 +20,7 @@ function Desktop() {
     } : {backgroundColor: wallpaper.path}}>
         
         <div className="app-grid">
-            <DesktopIcon title="Wallpapers"/>
-            <ExplorerIcon/>
+            <WallpaperIcon/>
         </div>
 
         <WindowContainer/>

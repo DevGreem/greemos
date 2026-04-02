@@ -14,7 +14,7 @@ function Window({
     onClose = () => {},
     defaultCoords = {x: "50%", y: "50%"},
     children
-}: UniqueWindowInfo & {defaultCoords?: CSSPoint, onOpen?: (window: UniqueWindowInfo) => void, onClose?: (window: UniqueWindowInfo) => void, children?: ReactNode}) {
+}: UniqueWindowInfo & {defaultCoords?: CSSPoint, defaultSize?: CSSPoint, onOpen?: (window: UniqueWindowInfo) => void, onClose?: (window: UniqueWindowInfo) => void, children?: ReactNode}) {
 
     const windowContext = useContext(WindowContext);
 
@@ -43,19 +43,33 @@ function Window({
         };
 
         window.addEventListener("mousemove", handleMove)
+        window.addEventListener("mouseup", () => setHover(false))
         
         return () => window.removeEventListener("mousemove", handleMove);
     }, [hover, offset])
 
-    if (!opened) {
-        onOpen({id, title, icon, onOpen, onClose});
-        setOpened(true);
-    }
+    useEffect(() => {
+        if (!opened) {
+            onOpen({id, title, icon, onOpen, onClose});
+            setOpened(true);
+        }
+
+        return
+    }, [])
 
     return <div className="window" style={{
         left: coords.x,
         top: coords.y
-    }}>
+    }}
+        onMouseDown={(e) => {
+            const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+            const over = 2;
+
+            if (e.clientX >= rect.x-over || e.clientX <= rect.x+over) {
+                
+            }
+        }}
+    >
 
         <div className="window-bar" onMouseDown={(e) => {
             const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
@@ -66,9 +80,9 @@ function Window({
             })
 
             setHover(true);
-        }} onMouseUp={() => setHover(false)}>
+        }}>
 
-            <img src={icon}/>
+            <img src={icon} height={24} width={24}/>
             <p>{title}</p>
 
             <div className="buttons">

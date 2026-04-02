@@ -3,21 +3,31 @@
     display: flex;
     flex-direction: column;
     z-index: 100;
+    min-width: 200px;
+    min-height: 100px;
+    max-width: 100vw;
+    max-height: 100vh;
+    resize: both;
+    overflow: auto auto;
+    overflow-block: hidden;
+}
+
+.window, .window * {
+    background-color: white
 }
 
 .window-bar {
-    background-color: white;
     padding: 4px;
-
     display: flex;
     justify-content: space-between;
     align-items: center;
     cursor: move;
     user-select: none;
+    width: 100%;
+    box-sizing: border-box;
+    flex-shrink: 0;
 }
 
-.window-content {
-    background-color: white;
-    min-height: 100px;
-
+.window-content  {
+    flex: 1;
 }
