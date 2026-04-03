@@ -1,4 +1,4 @@
-import { useContext } from "react"
+import { useContext, useEffect, useState } from "react"
 import "./taskbar.css"
 import { WindowContext } from "$/context/window/WindowContext"
 import { TaskBarIcon } from "../icons/TaskBarIcon";
@@ -12,6 +12,14 @@ export function TaskBar() {
         return
     };
 
+    const [time, setTime] = useState(new Date());
+
+    useEffect(() => {
+        const timeUpdater = setInterval(() => setTime(new Date()), 1000);
+
+        return () => clearInterval(timeUpdater);
+    }, [])
+
     return <div className="taskbar">
         <div className="taskbar-apps">
             {windowsContext.windows.map(window => {
@@ -20,7 +28,7 @@ export function TaskBar() {
         </div>
         <div className="os-info">
             <p id="userTime">
-                {new Date().toLocaleDateString()}
+                {time.toLocaleString()}
             </p>
         </div>
     </div>

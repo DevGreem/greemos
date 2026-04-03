@@ -22,7 +22,7 @@ export function WelcomeScreen() {
         className="rounded-window"
     >
         <div className="welcome-window">
-
+            
         </div>
     </Window>
 }
