@@ -6,6 +6,7 @@ import type { Point } from "$/types/Point";
 import type { CSSPoint } from "$/types/CSSPoint";
 import { WindowContext } from "$/context/window/WindowContext";
 import type { UniqueWindowInstance } from "$/types/window/WindowInstance";
+import { WindowInstanceContext } from "$/context/window/WindowInstanceContext";
 
 function Window({
     id,
@@ -123,7 +124,9 @@ function Window({
         </div>
 
         <div className="window-content">
-            {children}
+            <WindowInstanceContext.Provider value={windowInfo}>
+                {children}
+            </WindowInstanceContext.Provider>
         </div>
     </div>
 }
