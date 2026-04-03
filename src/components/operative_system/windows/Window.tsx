@@ -29,7 +29,7 @@ function Window({
 
     if (!windowContext) throw new Error("No window context!");
 
-    const { windows, closeWindow } = windowContext;
+    const { closeWindow } = windowContext;
 
     const [opened, setOpened] = useState<boolean>(false);
 
@@ -40,7 +40,7 @@ function Window({
     
     const windowRef = useRef<HTMLDivElement>(null);
     const windowInfo: UniqueWindowInfo = {id, title, icon, defaultCoords, defaultSize, cantClose, cantMaximize, cantMinimize, canResize, children}
-
+    
     useEffect(() => {
         const handleMove = (e: MouseEvent) => {
             
@@ -74,11 +74,9 @@ function Window({
 
         const rect = windowRef.current.getBoundingClientRect();
 
-        const offset = windows.length * 20
-
         setCoords({
-            x: (window.innerWidth - rect.width) / 2 + offset,
-            y: (window.innerHeight - rect.height) / 2 + offset
+            x: (window.innerWidth - rect.width) / 2,
+            y: (window.innerHeight - rect.height) / 2
         })
     }, [])
     
