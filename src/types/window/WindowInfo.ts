@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import type { AppInfo } from "../AppInfo";
 import type { CSSPoint } from "../CSSPoint";
 
@@ -11,6 +11,10 @@ export interface WindowInfo extends AppInfo {
     cantMaximize?: boolean;
     cantClose?: boolean;
     canResize?: boolean;
+    style?: CSSProperties;
+    className?: string;
+    childrenStyle?: CSSProperties;
+    childrenClassName?: string;
 }
 
 export interface UniqueWindowInfo extends WindowInfo {

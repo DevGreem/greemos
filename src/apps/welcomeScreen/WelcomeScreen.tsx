@@ -1,6 +1,7 @@
-import Window from "../Window";
+import Window from "$/components/operative_system/windows/Window";
 import { WindowContext } from "$/context/window/WindowContext";
 import { useContext } from "react";
+import { WelcomeScreenContent } from "./WelcomeScreenContent";
 
 
 export function WelcomeScreen() {
@@ -13,7 +14,7 @@ export function WelcomeScreen() {
 
     return <Window
         id={Date.now()}
-        title="Welcome!"
+        title='Welcome to <span style="color: green">GreemOS!</span>'
         defaultCoords={{x: "50%", y: "50%"}}
         onClose={() => setReadedWelcomeScreen()}
         defaultSize={{x: 500, y: 500}}
@@ -21,8 +22,6 @@ export function WelcomeScreen() {
         cantMaximize
         className="rounded-window"
     >
-        <div className="welcome-window">
-            
-        </div>
+        <WelcomeScreenContent/>
     </Window>
 }

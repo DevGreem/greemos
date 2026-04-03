@@ -1,7 +1,7 @@
 import { WindowContext } from "$/context/window/WindowContext";
 import { useContext } from "react";
 import Window from "./Window";
-import { WelcomeScreen } from "./welcomeScreen/WelcomeScreen";
+import { WelcomeScreen } from "../../../apps/welcomeScreen/WelcomeScreen";
 
 
 export function WindowContainer() {
