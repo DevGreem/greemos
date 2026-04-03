@@ -1,27 +1,26 @@
 
 import { memo, useEffect, useLayoutEffect, useRef, useState, type FC } from "react";
 import "./window.css"
-import type { UniqueWindowInfo } from "$/types/window/WindowInfo";
 import type { Point } from "$/types/Point";
 import type { CSSPoint } from "$/types/CSSPoint";
 import type { UniqueWindowInstance } from "$/types/window/WindowInstance";
 import { WindowInstanceContext } from "$/context/window/WindowInstanceContext";
 import WindowContent from "./WindowContent";
 import { useWindows } from "$/context/window/WindowsContext";
+import type { UniqueWindowInfo } from "$/types/window/WindowInfo";
 
 const Window: FC<UniqueWindowInstance> = (info: UniqueWindowInstance) => {
 
-    const { bringToFront, closeWindow } = useWindows();
+    const { bringToFront, closeWindow, updateWindow } = useWindows();
 
     const windowRef = useRef<HTMLDivElement>(null);
-    const [windowInfo, setWindowInfo] = useState<UniqueWindowInfo>(info);
 
     const [opened, setOpened] = useState<boolean>(false);
     const [offset, setOffset] = useState<Point>({x:0, y:0})
 
     const [hover, setHover] = useState<boolean>(false);
 
-    const [coords, setCoords] = useState<CSSPoint>(windowInfo.defaultCoords || {x:"50%", y:"50%"});
+    const [coords, setCoords] = useState<CSSPoint>(info.defaultCoords || {x:"50%", y:"50%"});
 
     useEffect(() => {
         const handleMove = (e: MouseEvent) => {
@@ -73,10 +72,10 @@ const Window: FC<UniqueWindowInstance> = (info: UniqueWindowInstance) => {
     return <div className={`window ${info.className}`} style={{
         left: coords.x,
         top: coords.y,
-        width: windowInfo.defaultSize?.x || 0,
-        height: windowInfo.defaultSize?.y || 0,
-        resize: windowInfo.canResize ? "both" : "none",
-        ...windowInfo.style
+        width: info.defaultSize?.x || 0,
+        height: info.defaultSize?.y || 0,
+        resize: info.canResize ? "both" : "none",
+        ...info.style
     }}
         ref={windowRef}
         onMouseDown={() => bringToFront(info.id)}
@@ -115,7 +114,10 @@ const Window: FC<UniqueWindowInstance> = (info: UniqueWindowInstance) => {
             </div>
         </div>
 
-        <WindowInstanceContext.Provider value={{ window: info, setWindowInfo }}>
+        <WindowInstanceContext.Provider value={{
+            window: info,
+            updateWindow: (updater: (window: UniqueWindowInfo) => UniqueWindowInfo) => updateWindow(info.id, updater)
+        }}>
             <WindowContent {...info.childrenInfo}>
                 {info.children}
             </WindowContent>

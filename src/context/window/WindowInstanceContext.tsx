@@ -1,9 +1,9 @@
 import type { UniqueWindowInfo } from "$/types/window/WindowInfo";
-import { createContext, useContext, type Dispatch, type SetStateAction } from "react";
+import { createContext, useContext } from "react";
 
 interface WindowInstanceContextType {
     window: UniqueWindowInfo;
-    setWindowInfo: Dispatch<SetStateAction<UniqueWindowInfo>>;
+    updateWindow: (updater: (window: UniqueWindowInfo) => UniqueWindowInfo) => void;
 }
 
 

@@ -8,6 +8,7 @@ type WindowsContextType = {
     windows: UniqueWindowInstance[];
     openWindow: (params: WindowInfo) => void;
     closeWindow: (id: UniqueWindowInfo) => void;
+    updateWindow: (id: number, updater: (window: UniqueWindowInfo) => UniqueWindowInfo) => void;
     showWelcomeScreen: boolean;
     setReadedWelcomeScreen: () => void;
     bringToFront: (id: number) => void;
