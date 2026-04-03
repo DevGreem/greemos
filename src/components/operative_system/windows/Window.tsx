@@ -1,5 +1,5 @@
 
-import { useContext, useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
+import { memo, useContext, useEffect, useLayoutEffect, useRef, useState, type FC } from "react";
 import "./window.css"
 import type { UniqueWindowInfo } from "$/types/window/WindowInfo";
 import type { Point } from "$/types/Point";
@@ -7,27 +7,9 @@ import type { CSSPoint } from "$/types/CSSPoint";
 import { WindowContext } from "$/context/window/WindowContext";
 import type { UniqueWindowInstance } from "$/types/window/WindowInstance";
 import { WindowInstanceContext } from "$/context/window/WindowInstanceContext";
+import WindowContent from "./WindowContent";
 
-function Window({
-    id,
-    title,
-    icon,
-    onMinimize = () => {},
-    onMaximize = () => {},
-    onOpen = () => {},
-    onClose = () => {},
-    defaultCoords = {x: "50%", y: "50%"},
-    defaultSize = {x: 0, y: 0},
-    className = "",
-    cantMinimize,
-    cantMaximize,
-    cantClose,
-    canResize,
-    style,
-    children,
-    childrenStyle,
-    childrenClassName
-}: UniqueWindowInstance) {
+const Window: FC<UniqueWindowInstance> = (info: UniqueWindowInstance) => {
 
     const windowContext = useContext(WindowContext);
 
@@ -35,36 +17,15 @@ function Window({
 
     const { closeWindow } = windowContext;
 
+    const windowRef = useRef<HTMLDivElement>(null);
+    const [windowInfo, setWindowInfo] = useState<UniqueWindowInfo>(info);
+
     const [opened, setOpened] = useState<boolean>(false);
     const [offset, setOffset] = useState<Point>({x:0, y:0})
 
     const [hover, setHover] = useState<boolean>(false);
-    
-    const windowRef = useRef<HTMLDivElement>(null);
-    const [windowInfo, setWindowInfo] = useState<UniqueWindowInfo>({
-        id,
-        title,
-        icon,
-        defaultCoords,
-        defaultSize,
-        cantClose,
-        cantMaximize,
-        cantMinimize,
-        canResize,
-        children,
-        style,
-        childrenStyle,
-        childrenClassName,
-    });
 
     const [coords, setCoords] = useState<CSSPoint>(windowInfo.defaultCoords || {x:"50%", y:"50%"});
-    
-    function setContentStyle(newStyle: CSSProperties) {
-        setWindowInfo(previous => ({
-            ...previous,
-            childrenStyle: {...previous.childrenStyle, ...newStyle}
-        }))
-    }
 
     useEffect(() => {
         const handleMove = (e: MouseEvent) => {
@@ -79,15 +40,20 @@ function Window({
             })
         };
 
+        const handleUp = () => setHover(false);
+
         window.addEventListener("mousemove", handleMove)
-        window.addEventListener("mouseup", () => setHover(false))
+        window.addEventListener("mouseup", handleUp)
         
-        return () => window.removeEventListener("mousemove", handleMove);
+        return () => {
+            window.removeEventListener("mousemove", handleMove);
+            window.removeEventListener("mouseup", handleUp);
+        };
     }, [hover, offset])
 
     useEffect(() => {
         if (!opened) {
-            onOpen(windowInfo);
+            info.onOpen?.(info);
             setOpened(true);
         }
 
@@ -106,7 +72,7 @@ function Window({
     }, [])
     
 
-    return <div className={`window ${className}`} style={{
+    return <div className={`window ${info.className}`} style={{
         left: coords.x,
         top: coords.y,
         width: windowInfo.defaultSize?.x  || 0,
@@ -128,34 +94,34 @@ function Window({
             setHover(true);
         }}>
 
-            {icon && <img src={icon} height={24} width={24}/>}
-            <p dangerouslySetInnerHTML={{__html: title}}/>
+            {info.icon && <img src={info.icon} height={24} width={24}/>}
+            <p dangerouslySetInnerHTML={{__html: info.title}}/>
 
             <div className="window-buttons">
                 
-                {!cantMinimize && <button onClick={() => onMinimize(windowInfo)}>
+                {!info.cantMinimize && <button onClick={() => info.onMinimize?.(info)}>
                     -
                 </button>}
 
-                {!cantMaximize && <button onClick={() => onMaximize(windowInfo)}>
+                {!info.cantMaximize && <button onClick={() => info.onMaximize?.(info)}>
                     o
                 </button>}
                 
-                {!cantClose && <button onClick={() => {
-                    closeWindow(windowInfo)
-                    onClose(windowInfo)
+                {!info.cantClose && <button onClick={() => {
+                    closeWindow(info)
+                    info.onClose?.(info)
                 }}>
                     X
                 </button>}
             </div>
         </div>
 
-        <div className={`window-content ${windowInfo.childrenClassName || ""}`} style={{...windowInfo.childrenStyle}}>
-            <WindowInstanceContext.Provider value={{ window: windowInfo, setWindowInfo, setContentStyle }}>
-                {children}
-            </WindowInstanceContext.Provider>
-        </div>
+        <WindowInstanceContext.Provider value={{ window: info, setWindowInfo }}>
+            <WindowContent {...info.childrenInfo}>
+                {info.children}
+            </WindowContent>
+        </WindowInstanceContext.Provider>
     </div>
 }
 
-export default Window;
+export default memo(Window);

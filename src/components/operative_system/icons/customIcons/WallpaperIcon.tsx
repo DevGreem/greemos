@@ -1,5 +1,6 @@
 import { WallpaperApp } from "$/apps/wallpaper/WallpaperApp";
-import { DesktopIcon } from "../DesktopIcon";
+import { memo } from "react";
+import DesktopIcon from "../DesktopIcon";
 
 
 export function WallpaperIcon({ onChangeWallpaper }: {onChangeWallpaper?: (wallpaperPath: string) => void}) {
@@ -8,7 +9,10 @@ export function WallpaperIcon({ onChangeWallpaper }: {onChangeWallpaper?: (wallp
         title="Wallpapers"
         canResize
         defaultSize={{x: 700, y: 700}}
+        
     >
         <WallpaperApp onChangeWallpaper={onChangeWallpaper}/>
     </DesktopIcon>
 }
+
+export default memo(WallpaperIcon);

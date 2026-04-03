@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react"
 import "./taskbar.css"
 import { WindowContext } from "$/context/window/WindowContext"
-import { TaskBarIcon } from "../icons/TaskBarIcon";
+import TaskBarIcon from "../icons/TaskBarIcon";
 
 export function TaskBar() {
 

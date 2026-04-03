@@ -13,8 +13,6 @@ export interface WindowInfo extends AppInfo {
     canResize?: boolean;
     style?: CSSProperties;
     className?: string;
-    childrenStyle?: CSSProperties;
-    childrenClassName?: string;
 }
 
 export interface UniqueWindowInfo extends WindowInfo {

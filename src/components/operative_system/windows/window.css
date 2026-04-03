@@ -48,9 +48,7 @@
     height: 100%
 }
 
-.window-content  {
-    flex: 1;
-}
+
 
 .rounded-window {
     border-radius: 4px;
