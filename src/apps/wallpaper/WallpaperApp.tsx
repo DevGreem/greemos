@@ -1,16 +1,13 @@
-import { WallpaperContext } from "$/context/wallpaper/WallpaperContext"
-import { useContext, useRef, useState } from "react"
+import { useWallpaper } from "$/context/wallpaper/WallpaperContext"
+import { useRef, useState } from "react"
 import "./wallpaperapp.css"
 import type { WallpaperType } from "$/types/WallpaperType";
 import type { WallpaperInfo } from "$/types/WallpaperInfo";
 
 export function WallpaperApp({ onChangeWallpaper }: {onChangeWallpaper?: (wallpaperPath: string) => void}) {
 
-    const wallpaperContext = useContext(WallpaperContext);
+    const { wallpaper, changeWallpaper } = useWallpaper();
 
-    if (!wallpaperContext) throw new Error("No wallpapers");
-
-    const { wallpaper, changeWallpaper } = wallpaperContext;
     const [actualWallpaper, setActualWallpaper] = useState<WallpaperInfo>(wallpaper)
 
     const imageWallpapers = [

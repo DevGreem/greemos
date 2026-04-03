@@ -8,7 +8,9 @@ export interface WindowInfo extends AppInfo {
     defaultCoords?: CSSPoint;
     defaultSize?: CSSPoint;
     cantMinimize?: boolean;
+    minimized?: boolean;
     cantMaximize?: boolean;
+    maximized?: boolean;
     cantClose?: boolean;
     canResize?: boolean;
     style?: CSSProperties;

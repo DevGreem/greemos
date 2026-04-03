@@ -11,12 +11,13 @@ import type { UniqueWindowInfo } from "$/types/window/WindowInfo";
 
 const Window: FC<UniqueWindowInstance> = (info: UniqueWindowInstance) => {
 
-    const { bringToFront, closeWindow, updateWindow } = useWindows();
+    const { bringToFront, closeWindow, updateWindow, toggleMinimize } = useWindows();
 
     const windowRef = useRef<HTMLDivElement>(null);
 
     const [opened, setOpened] = useState<boolean>(false);
     const [offset, setOffset] = useState<Point>({x:0, y:0})
+    const [maximized, setMaximized] = useState(info.maximized);
 
     const [hover, setHover] = useState<boolean>(false);
 
@@ -25,7 +26,7 @@ const Window: FC<UniqueWindowInstance> = (info: UniqueWindowInstance) => {
     useEffect(() => {
         const handleMove = (e: MouseEvent) => {
             
-            if (!hover) {
+            if (!hover || maximized) {
                 return;
             }
 
@@ -68,13 +69,15 @@ const Window: FC<UniqueWindowInstance> = (info: UniqueWindowInstance) => {
         })
     }, [])
     
+    if (info.minimized) return;
 
     return <div className={`window ${info.className}`} style={{
-        left: coords.x,
-        top: coords.y,
-        width: info.defaultSize?.x || 0,
-        height: info.defaultSize?.y || 0,
-        resize: info.canResize ? "both" : "none",
+        left: maximized ? 0 : coords.x,
+        top: maximized ? 0 : coords.y,
+        width: maximized ? "100%" : info.defaultSize?.x || 0,
+        height: maximized ? (window.innerHeight - 46) : info.defaultSize?.y || 0,
+        resize: !maximized && info.canResize ? "both" : "none",
+        overflow: maximized ? "hidden" : "scroll",
         ...info.style
     }}
         ref={windowRef}
@@ -97,11 +100,17 @@ const Window: FC<UniqueWindowInstance> = (info: UniqueWindowInstance) => {
 
             <div className="window-buttons">
                 
-                {!info.cantMinimize && <button onClick={() => info.onMinimize?.(info)}>
+                {!info.cantMinimize && <button onClick={() => {
+                    toggleMinimize(info.id);
+                    info.onMinimize?.(info);
+                }}>
                     -
                 </button>}
 
-                {!info.cantMaximize && <button onClick={() => info.onMaximize?.(info)}>
+                {!info.cantMaximize && <button onClick={() => {
+                    setMaximized(!maximized);
+                    info.onMaximize?.(info)
+                }}>
                     o
                 </button>}
                 

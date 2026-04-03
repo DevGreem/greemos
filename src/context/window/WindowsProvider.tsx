@@ -54,31 +54,23 @@ export function WindowsProvider({ children }: { children: ReactNode }) {
                 })
             )
         })
-        
-        // setWindows(windows => {
-        //     const nonFocusedWindows = windows.filter(window => window.id != id);
-
-        //     const target = windows.find(window => window.id == id);
-
-        //     if (!target) return windows;
-
-        //     return [
-        //         ...nonFocusedWindows.map((window, index) => ({
-        //             ...window,
-        //             style: { ...window.style, zIndex: index+1 }
-        //         })),
-        //         {
-        //             ...target,
-        //             style: {...target.style, zIndex: nonFocusedWindows.length+1}
-        //         }
-        //     ]
-        // })
 
         setActiveWindowId(id);
     }
 
     function updateWindow(id: number, updater: (window: UniqueWindowInfo) => UniqueWindowInfo) {
         setWindows(previous => previous.map(window => window.id == id ? updater(window) : window))
+    }
+
+    function toggleMinimize(id: number) {
+        updateWindow(id, window => ({
+            ...window,
+            minimized: !window.minimized
+        }));
+        
+        if (!windows.find(window => window.id == id)?.minimized) {
+            bringToFront(id);
+        }
     }
 
     return <WindowsContext.Provider value={{
@@ -89,7 +81,8 @@ export function WindowsProvider({ children }: { children: ReactNode }) {
         setReadedWelcomeScreen,
         activeWindowId,
         bringToFront,
-        updateWindow
+        updateWindow,
+        toggleMinimize
     }}>
         {children}
     </WindowsContext.Provider>

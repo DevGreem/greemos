@@ -6,12 +6,13 @@ import { createContext, useContext } from "react";
 type WindowsContextType = {
     activeWindowId: number;
     windows: UniqueWindowInstance[];
-    openWindow: (params: WindowInfo) => void;
-    closeWindow: (id: UniqueWindowInfo) => void;
-    updateWindow: (id: number, updater: (window: UniqueWindowInfo) => UniqueWindowInfo) => void;
+    openWindow(params: WindowInfo): void;
+    closeWindow(id: UniqueWindowInfo): void;
+    updateWindow(id: number, updater: (window: UniqueWindowInfo) => UniqueWindowInfo): void;
     showWelcomeScreen: boolean;
-    setReadedWelcomeScreen: () => void;
-    bringToFront: (id: number) => void;
+    setReadedWelcomeScreen(): void;
+    bringToFront(id: number): void;
+    toggleMinimize(id: number): void;
 }
 
 export const WindowsContext = createContext<WindowsContextType|undefined>(undefined);

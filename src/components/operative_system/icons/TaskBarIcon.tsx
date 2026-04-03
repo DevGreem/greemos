@@ -5,13 +5,13 @@ import { useWindows } from "$/context/window/WindowsContext";
 
 function TaskBarIcon(app: UniqueAppInfo) {
 
-    const { bringToFront } = useWindows();
+    const { bringToFront, toggleMinimize } = useWindows();
 
     return <div
         className="taskbar-icon"
         onClick={() => {
             bringToFront(app.id);
-            console.log(app.id)
+            toggleMinimize(app.id);
         }}
     >
         <img
