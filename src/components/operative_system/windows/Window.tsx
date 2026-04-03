@@ -1,5 +1,5 @@
 
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useLayoutEffect, useRef, useState } from "react";
 import "./window.css"
 import type { UniqueWindowInfo } from "$/types/window/WindowInfo";
 import type { Point } from "$/types/Point";
@@ -37,7 +37,8 @@ function Window({
     const [offset, setOffset] = useState<Point>({x:0, y:0})
 
     const [hover, setHover] = useState<boolean>(false);
-
+    
+    const windowRef = useRef<HTMLDivElement>(null);
     const windowInfo: UniqueWindowInfo = {id, title, icon, defaultCoords, defaultSize, cantClose, cantMaximize, cantMinimize, canResize, children}
 
     useEffect(() => {
@@ -66,15 +67,27 @@ function Window({
         }
 
         return
+    }, []);
+
+    useLayoutEffect(() => {
+        if (!windowRef.current) return;
+
+        const rect = windowRef.current.getBoundingClientRect();
+
+        setCoords({
+            x: (window.innerWidth - rect.width) / 2,
+            y: (window.innerHeight - rect.height) / 2
+        })
     }, [])
+    
 
     return <div className={`window ${className}`} style={{
         left: coords.x,
         top: coords.y,
         width: defaultSize.x,
         height: defaultSize.y,
-        resize: canResize ? "both" : "none"
-    }}>
+        resize: canResize ? "both" : "none",
+    }} ref={windowRef}>
 
         <div className="window-bar" onMouseDown={(e) => {
             const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
