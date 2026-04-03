@@ -1,21 +1,17 @@
 
-import { memo, useContext, useEffect, useLayoutEffect, useRef, useState, type FC } from "react";
+import { memo, useEffect, useLayoutEffect, useRef, useState, type FC } from "react";
 import "./window.css"
 import type { UniqueWindowInfo } from "$/types/window/WindowInfo";
 import type { Point } from "$/types/Point";
 import type { CSSPoint } from "$/types/CSSPoint";
-import { WindowContext } from "$/context/window/WindowContext";
 import type { UniqueWindowInstance } from "$/types/window/WindowInstance";
 import { WindowInstanceContext } from "$/context/window/WindowInstanceContext";
 import WindowContent from "./WindowContent";
+import { useWindows } from "$/context/window/WindowsContext";
 
 const Window: FC<UniqueWindowInstance> = (info: UniqueWindowInstance) => {
 
-    const windowContext = useContext(WindowContext);
-
-    if (!windowContext) throw new Error("No window context!");
-
-    const { closeWindow } = windowContext;
+    const { bringToFront, closeWindow } = useWindows();
 
     const windowRef = useRef<HTMLDivElement>(null);
     const [windowInfo, setWindowInfo] = useState<UniqueWindowInfo>(info);
@@ -70,17 +66,22 @@ const Window: FC<UniqueWindowInstance> = (info: UniqueWindowInstance) => {
             y: (window.innerHeight - rect.height) / 2
         })
     }, [])
+
+    function onFocus() {
+        bringToFront(info.id)
+    }
     
 
     return <div className={`window ${info.className}`} style={{
         left: coords.x,
         top: coords.y,
-        width: windowInfo.defaultSize?.x  || 0,
+        width: windowInfo.defaultSize?.x || 0,
         height: windowInfo.defaultSize?.y || 0,
         resize: windowInfo.canResize ? "both" : "none",
         ...windowInfo.style
     }}
         ref={windowRef}
+        onMouseDown={onFocus}
     >
 
         <div className="window-bar" onMouseDown={(e) => {

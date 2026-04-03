@@ -36,7 +36,7 @@ export function WallpaperApp({ onChangeWallpaper }: {onChangeWallpaper?: (wallpa
 
     const colorRef = useRef<HTMLInputElement>(null);
     
-    return <div className="wallpapers-app" style={{}}>
+    return <div className="wallpapers-app">
 
         <div className="wallpaper-type">
             <label htmlFor="wallpaper-type-selector">Wallpaper type:</label>

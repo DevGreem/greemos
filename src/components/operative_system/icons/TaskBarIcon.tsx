@@ -1,10 +1,11 @@
 import { memo } from "react"
 import "./taskbaricon.css"
+import type { UniqueAppInfo } from "$/types/AppInfo";
 
-function TaskBarIcon({icon = "react.svg"}: {icon?: string}) {
+function TaskBarIcon(app: UniqueAppInfo) {
 
     return <div className="taskbar-icon">
-        <img src={icon} alt="" />
+        <img src={app.icon ?? "react.svg"} alt="" />
     </div>
 }
 

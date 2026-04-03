@@ -1,16 +1,11 @@
-import { WindowContext } from "$/context/window/WindowContext";
-import { useContext } from "react";
 import Window from "./Window";
 import { WelcomeScreen } from "../../../apps/welcomeScreen/WelcomeScreen";
+import { useWindows } from "$/context/window/WindowsContext";
 
 
 export function WindowContainer() {
 
-    const windowsContext = useContext(WindowContext);
-    
-    if (!windowsContext) throw new Error("Windows context not found")
-    
-    const { showWelcomeScreen, windows } = windowsContext;
+    const { showWelcomeScreen, windows } = useWindows();
     
     return <div className="windows-container">
 

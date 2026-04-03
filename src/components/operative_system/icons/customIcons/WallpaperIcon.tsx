@@ -8,7 +8,7 @@ export function WallpaperIcon({ onChangeWallpaper }: {onChangeWallpaper?: (wallp
     return <DesktopIcon
         title="Wallpapers"
         canResize
-        defaultSize={{x: 700, y: 700}}
+        defaultSize={{x: "50%", y: "50%"}}
         
     >
         <WallpaperApp onChangeWallpaper={onChangeWallpaper}/>

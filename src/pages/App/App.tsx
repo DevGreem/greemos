@@ -1,6 +1,6 @@
 
 import { WallpaperProvider } from '$/context/wallpaper/WallpaperProvider';
-import { WindowProvider } from '$/context/window/WindowProvider';
+import { WindowsProvider } from '$/context/window/WindowsProvider';
 import { MemoryManager } from '$/core/MemoryManager';
 import AppContent from './AppContent';
 
@@ -8,11 +8,11 @@ function App() {
   MemoryManager.init()
 
   return (
-    <WindowProvider>
+    <WindowsProvider>
       <WallpaperProvider>
         <AppContent/>
       </WallpaperProvider>
-    </WindowProvider>
+    </WindowsProvider>
   )
 }
 

@@ -1,16 +1,11 @@
-import { useContext, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import "./taskbar.css"
-import { WindowContext } from "$/context/window/WindowContext"
+import { useWindows } from "$/context/window/WindowsContext"
 import TaskBarIcon from "../icons/TaskBarIcon";
 
 export function TaskBar() {
 
-    const windowsContext = useContext(WindowContext);
-
-    if (!windowsContext) {
-        console.log("no context")
-        return
-    };
+    const { windows } = useWindows();
 
     const [time, setTime] = useState(new Date());
 
@@ -22,8 +17,12 @@ export function TaskBar() {
 
     return <div className="taskbar">
         <div className="taskbar-apps">
-            {windowsContext.windows.map(window => {
-                return <TaskBarIcon key={window.id} icon={window.icon}/>
+            {windows.map(window => {
+                return <TaskBarIcon key={window.id}
+                    id={window.id}
+                    title={window.title}
+                    icon={window.icon}
+                />
             })}
         </div>
         <div className="os-info">
