@@ -59,6 +59,8 @@ const Window: FC<UniqueWindowInstance> = (info: UniqueWindowInstance) => {
     useLayoutEffect(() => {
         if (!windowRef.current) return;
 
+        if (coords.x != "50%" && coords.y != "50%") return;
+
         const rect = windowRef.current.getBoundingClientRect();
 
         setCoords({
@@ -66,10 +68,6 @@ const Window: FC<UniqueWindowInstance> = (info: UniqueWindowInstance) => {
             y: (window.innerHeight - rect.height) / 2
         })
     }, [])
-
-    function onFocus() {
-        bringToFront(info.id)
-    }
     
 
     return <div className={`window ${info.className}`} style={{
@@ -81,7 +79,7 @@ const Window: FC<UniqueWindowInstance> = (info: UniqueWindowInstance) => {
         ...windowInfo.style
     }}
         ref={windowRef}
-        onMouseDown={onFocus}
+        onMouseDown={() => bringToFront(info.id)}
     >
 
         <div className="window-bar" onMouseDown={(e) => {
