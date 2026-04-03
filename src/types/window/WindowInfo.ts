@@ -11,6 +11,7 @@ export interface WindowInfo extends AppInfo {
     minimized?: boolean;
     cantMaximize?: boolean;
     maximized?: boolean;
+    overflow?: "hidden"|"scroll";
     cantClose?: boolean;
     canResize?: boolean;
     style?: CSSProperties;

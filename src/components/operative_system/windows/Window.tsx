@@ -77,7 +77,7 @@ const Window: FC<UniqueWindowInstance> = (info: UniqueWindowInstance) => {
         width: maximized ? "100%" : info.defaultSize?.x || 0,
         height: maximized ? (window.innerHeight - 46) : info.defaultSize?.y || 0,
         resize: !maximized && info.canResize ? "both" : "none",
-        overflow: maximized ? "hidden" : "scroll",
+        overflow: maximized ? "hidden" : info.overflow,
         ...info.style
     }}
         ref={windowRef}

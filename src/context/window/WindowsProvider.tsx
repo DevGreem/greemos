@@ -29,6 +29,7 @@ export function WindowsProvider({ children }: { children: ReactNode }) {
                 {
                     id: Date.now(),
                     ...window,
+                    overflow: window.overflow ?? "scroll",
                     style: {
                         ...window.style,
                         zIndex: index

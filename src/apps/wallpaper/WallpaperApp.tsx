@@ -1,10 +1,10 @@
 import { useWallpaper } from "$/context/wallpaper/WallpaperContext"
-import { useRef, useState } from "react"
+import { memo, useRef, useState } from "react"
 import "./wallpaperapp.css"
 import type { WallpaperType } from "$/types/WallpaperType";
 import type { WallpaperInfo } from "$/types/WallpaperInfo";
 
-export function WallpaperApp({ onChangeWallpaper }: {onChangeWallpaper?: (wallpaperPath: string) => void}) {
+function WallpaperApp({ onChangeWallpaper }: {onChangeWallpaper?: (wallpaperPath: string) => void}) {
 
     const { wallpaper, changeWallpaper } = useWallpaper();
 
@@ -71,3 +71,5 @@ export function WallpaperApp({ onChangeWallpaper }: {onChangeWallpaper?: (wallpa
         }
     </div>
 }
+
+export default memo(WallpaperApp);

@@ -15,6 +15,8 @@ export function WelcomeScreen() {
         defaultSize={{x: 500, y: 500}}
         cantMinimize
         cantMaximize
+        overflow="hidden"
+        canResize={false}
         className="rounded-window"
     >
         <WelcomeScreenContent/>
