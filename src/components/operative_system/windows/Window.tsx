@@ -29,7 +29,7 @@ function Window({
 
     if (!windowContext) throw new Error("No window context!");
 
-    const { closeWindow } = windowContext;
+    const { windows, closeWindow } = windowContext;
 
     const [opened, setOpened] = useState<boolean>(false);
 
@@ -74,9 +74,11 @@ function Window({
 
         const rect = windowRef.current.getBoundingClientRect();
 
+        const offset = windows.length * 20
+
         setCoords({
-            x: (window.innerWidth - rect.width) / 2,
-            y: (window.innerHeight - rect.height) / 2
+            x: (window.innerWidth - rect.width) / 2 + offset,
+            y: (window.innerHeight - rect.height) / 2 + offset
         })
     }, [])
     
